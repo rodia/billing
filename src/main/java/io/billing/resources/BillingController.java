@@ -1,18 +1,27 @@
 package io.billing.resources;
 
+import io.billing.models.Bill;
+import io.billing.services.Billing;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 
 @Path("/api/v1/billing")
 @Produces(MediaType.APPLICATION_JSON)
 public class BillingController {
     @GET
     public Response showBilling() {
-        return Response.ok().build();
+        Collection<Bill> billing = Billing.INSTANCE.getBillingService().getBilling();
+
+        if (billing == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(billing).build();
     }
 
     @GET

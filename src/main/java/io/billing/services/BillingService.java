@@ -4,7 +4,6 @@ import io.billing.db.BillingRepository;
 import io.billing.db.ItemRepository;
 import io.billing.models.Bill;
 import io.billing.models.Item;
-import io.billing.models.Product;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -85,27 +84,57 @@ public class BillingService implements BillingInterface, ItemInterface {
     }
 
     @Override
-    public int addItem(Bill bill, Item item, Product product) {
+    public int addItem(Bill bill, Item item) {
+        try {
+            return this.itemRepository.addItem(bill, item);
+        } catch (SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+
         return 0;
     }
 
     @Override
     public Collection<Item> getItems(Bill bill) {
+        try {
+            return this.itemRepository.getItems(bill);
+        } catch (SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+
         return null;
     }
 
     @Override
-    public int updateItem(Item item, Product product) {
+    public int updateItem(Item item) {
+        try {
+            return this.itemRepository.updateItem(item);
+        } catch (SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+
         return 0;
     }
 
     @Override
     public int deleteItem(int id) {
+        try {
+            return this.itemRepository.deleteItem(id);
+        } catch (SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+
         return 0;
     }
 
     @Override
     public int deleteItem(Item item) {
+        try {
+            return this.itemRepository.deleteItem(item);
+        } catch (SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+
         return 0;
     }
 }

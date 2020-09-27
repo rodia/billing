@@ -21,6 +21,7 @@ public class BillingRepository extends Repository {
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
                         elements.add(new Bill(
+                                rs.getInt("id"),
                                 rs.getString("number"),
                                 new Date(rs.getString("date")),
                                 new Client(

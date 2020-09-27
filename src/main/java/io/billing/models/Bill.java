@@ -15,7 +15,15 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(String billNumber, Date date, Collection<Item> items, Client client) {
+    public Bill(int id, String billNumber, Date date, Client client) {
+        this.id = id;
+        this.billNumber = billNumber;
+        this.date = date;
+        this.client = client;
+    }
+
+    public Bill(int id, String billNumber, Date date, Collection<Item> items, Client client) {
+        this.id = id;
         this.billNumber = billNumber;
         this.date = date;
         this.items = items;
