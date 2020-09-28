@@ -141,7 +141,7 @@ public class BillingRepository extends Repository {
 
     private String getWhereWithLikeStatements(List<String> items) {
         if (items.size() == 0) {
-            throw new IllegalArgumentException("The items no have any elements");
+            throw new IllegalArgumentException("The items have no items.");
         }
 
         StringBuilder statement = new StringBuilder();
