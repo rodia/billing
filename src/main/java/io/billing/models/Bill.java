@@ -3,36 +3,29 @@ package io.billing.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collection;
-import java.util.Date;
 
 public class Bill {
     private int id;
     private String billNumber;
-    private Date date;
+    private String date;
     private Collection<Item> items;
     private Client client;
 
     public Bill() {
     }
 
-    public Bill(int id, String billNumber, Date date, Client client) {
+    public Bill(int id, String billNumber, String date, Client client) {
         this.id = id;
         this.billNumber = billNumber;
         this.date = date;
         this.client = client;
     }
 
-    public Bill(int id, String billNumber, Date date, Collection<Item> items, Client client) {
+    public Bill(int id, String billNumber, String date, Client client, Collection<Item> items) {
         this.id = id;
         this.billNumber = billNumber;
         this.date = date;
         this.items = items;
-        this.client = client;
-    }
-
-    public Bill(String billNumber, Date date, Client client) {
-        this.billNumber = billNumber;
-        this.date = date;
         this.client = client;
     }
 
@@ -46,11 +39,11 @@ public class Bill {
     }
 
     @JsonProperty
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

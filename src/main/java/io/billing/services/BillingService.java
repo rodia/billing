@@ -32,8 +32,8 @@ public class BillingService implements BillingInterface, ItemInterface {
     public Bill getBillById(int id) {
         try {
             return this.billingRepository.getBillById(id);
-        } catch (SQLException | ClassNotFoundException sqlException) {
-            sqlException.printStackTrace();
+        } catch (SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
         }
 
         return null;

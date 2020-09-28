@@ -27,7 +27,8 @@ public class ItemRepository extends Repository {
     }
 
     public Collection<Item> getItems(Bill bill) throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM item " +
+        String query = "SELECT item.id AS item_id, quantity, product.id AS product_id, description, unitPrice, stock " +
+                "FROM item " +
                 "INNER JOIN bill ON item.billId = bill.id " +
                 "INNER JOIN product ON item.productId = product.id " +
                 "WHERE bill.id = ? ";
@@ -39,12 +40,12 @@ public class ItemRepository extends Repository {
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
                         items.add(new Item(
-                                rs.getInt("item.id"),
+                                rs.getInt("item_id"),
                                 new Product(
-                                        rs.getInt("product.id"),
-                                        rs.getString("product.description"),
-                                        rs.getDouble("product.unitPrice"),
-                                        rs.getInt("product.stock")
+                                        rs.getInt("product_id"),
+                                        rs.getString("description"),
+                                        rs.getDouble("unitPrice"),
+                                        rs.getInt("stock")
                                 ),
                                 rs.getInt("quantity")
                         ));
