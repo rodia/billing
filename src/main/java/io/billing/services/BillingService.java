@@ -7,6 +7,7 @@ import io.billing.models.Item;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 public class BillingService implements BillingInterface, ItemInterface {
     private final BillingRepository billingRepository;
@@ -81,6 +82,53 @@ public class BillingService implements BillingInterface, ItemInterface {
         }
 
         return 0;
+    }
+
+    @Override
+    public Collection<Bill> getBillByNit(String nit) {
+        try {
+            return this.billingRepository.getBillingByNit(nit);
+        } catch (SQLException | ClassNotFoundException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Collection<Bill> getBillByDate(String date) {
+        try {
+            return this.billingRepository.getBillingByDate(this.formatDate(date));
+        } catch (SQLException | ClassNotFoundException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * String defaultFormat = "dd-MM-yyyy";
+     *
+     * @param date
+     * @return Formatted date as string.
+     */
+    private String formatDate(String date) {
+        String year = date.substring(0, 4);
+        String month = date.substring(4, 6);
+        String day = date.substring(6);
+
+        return day + "-" + month + "-" + year;
+    }
+
+    @Override
+    public Collection<Bill> getBillByItems(List<String> items) {
+        try {
+            return this.billingRepository.getBillingByItems(items);
+        } catch (SQLException | ClassNotFoundException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override

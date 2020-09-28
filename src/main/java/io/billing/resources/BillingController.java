@@ -10,13 +10,34 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Path("/api/v1/billing")
 @Produces(MediaType.APPLICATION_JSON)
 public class BillingController {
+    private static final String OPTIONAL_DEFAULT_VALUE = "none";
+
     @GET
-    public Response showBilling() {
-        Collection<Bill> billing = Billing.INSTANCE.getBillingService().getBilling();
+    public Response showBilling(
+            @QueryParam("nit") Optional<String> nitPrevious,
+            @QueryParam("date") Optional<String> datePrevious,
+            @QueryParam(value = "item")
+            final List<String> items
+    ) {
+        String nit = nitPrevious.orElse(OPTIONAL_DEFAULT_VALUE);
+        String date = datePrevious.orElse(OPTIONAL_DEFAULT_VALUE);
+        Collection<Bill> billing = null;
+
+        if (!nit.equals(OPTIONAL_DEFAULT_VALUE)) {
+            billing = Billing.INSTANCE.getBillingService().getBillByNit(nit);
+        } else if (!date.equals(OPTIONAL_DEFAULT_VALUE)) {
+            billing = Billing.INSTANCE.getBillingService().getBillByDate(date);
+        } else if (items.size() > 0) {
+            billing = Billing.INSTANCE.getBillingService().getBillByItems(items);
+        } else {
+            billing = Billing.INSTANCE.getBillingService().getBilling();
+        }
 
         if (billing == null) {
             return Response.status(Response.Status.NO_CONTENT).build();
@@ -80,12 +101,6 @@ public class BillingController {
         }
 
         return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-
-    @GET
-    @Path("?nit")
-    public Response findByQueryParam(@QueryParam("nit") String nit) {
-        return Response.ok(nit).build();
     }
 
     @DELETE
