@@ -1,6 +1,7 @@
 package io.billing;
 
 import io.billing.resources.BillingController;
+import io.billing.resources.StatsController;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -24,5 +25,6 @@ public class billingApplication extends Application<billingConfiguration> {
     public void run(final billingConfiguration configuration,
                     final Environment environment) {
         environment.jersey().register(new BillingController());
+        environment.jersey().register(new StatsController());
     }
 }
