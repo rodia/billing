@@ -1,7 +1,6 @@
 package io.billing.resources;
 
-import io.billing.models.ProductItem;
-import io.billing.models.ProductSold;
+import io.billing.models.*;
 import io.billing.services.Stats;
 
 import javax.ws.rs.GET;
@@ -50,6 +49,16 @@ public class StatsController {
     @GET
     @Path("/clients")
     public Response getClients() {
-        return Response.status(Response.Status.NO_CONTENT).build();
+        Collection<ClientBuy> clients = Stats.INSTANCE.getStatsService().getClientsBuy();
+
+        if (clients == null) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+
+        Collection<ClientBuy> result = clients.stream()
+                .sorted((a, b) -> (int) (b.getPayed() - a.getPayed()))
+                .collect(Collectors.toList());
+
+        return Response.ok(result).build();
     }
 }
