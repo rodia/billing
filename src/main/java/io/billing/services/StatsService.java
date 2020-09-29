@@ -2,9 +2,8 @@ package io.billing.services;
 
 import io.billing.db.ProductRepository;
 import io.billing.db.StatsRepository;
-import io.billing.models.Item;
+import io.billing.models.*;
 import io.billing.models.Product;
-import io.billing.models.ProductSold;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,6 +47,43 @@ public class StatsService implements StatsInterface {
             exception.printStackTrace();
         }
 
+        return null;
+    }
+
+    public Collection<ProductItem> getProductsAndItems() {
+        try {
+            Collection<Product> products = this.productRepository.getProducts();
+            Collection<Item> items = this.statsRepository.getItemsSold();
+            Collection<ProductItem> sold = new ArrayList<>();
+
+            for (Product product: products) {
+                int total = 0;
+
+                for (Item item: items) {
+                    if (item.getProduct().getId() == product.getId()) {
+                        total += item.getQuantity();
+                    }
+                }
+
+                sold.add(new ProductItem(
+                        product.getId(),
+                        product.getDescription(),
+                        product.getUnitPrice(),
+                        product.getStock(),
+                        total
+                ));
+            }
+
+            return sold;
+        } catch (SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Collection<ClientBuy> getClientsBuy() {
         return null;
     }
 }

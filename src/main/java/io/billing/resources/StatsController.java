@@ -1,5 +1,6 @@
 package io.billing.resources;
 
+import io.billing.models.ProductItem;
 import io.billing.models.ProductSold;
 import io.billing.services.Stats;
 
@@ -17,7 +18,17 @@ public class StatsController {
     @GET
     @Path("/products")
     public Response getProducts() {
-        return Response.status(Response.Status.NO_CONTENT).build();
+        Collection<ProductItem> sold = Stats.INSTANCE.getStatsService().getProductsAndItems();
+
+        if (sold == null) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+
+        Collection<ProductItem> result = sold.stream()
+                .sorted((a, b) -> b.getTotal() - a.getTotal())
+                .collect(Collectors.toList());
+
+        return Response.ok(result).build();
     }
 
     @GET
