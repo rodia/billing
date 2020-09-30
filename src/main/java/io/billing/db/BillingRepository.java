@@ -172,9 +172,8 @@ public class BillingRepository extends Repository {
     private int getGeneratedKey(PreparedStatement stmt) throws SQLException {
         int generatedKey = 0;
 
-        if (stmt.execute()) {
-            ResultSet rs = stmt.getGeneratedKeys();
-
+        stmt.execute();
+        try (ResultSet rs = stmt.getGeneratedKeys()) {
             if (rs.next()) {
                 generatedKey = rs.getInt(1);
             }
